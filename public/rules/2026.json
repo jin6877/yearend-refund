@@ -1,0 +1,139 @@
+{
+  "version": "2026.1.0",
+  "taxYear": 2026,
+  "updatedAt": "2026-11-13",
+  "sources": [
+    "소득세법·조세특례제한법 (2025.12.23 · 2026.4.21 개정)",
+    "jptcalc.kr 2026 귀속 연말정산 변경사항 정리 (2026.10.29)",
+    "make2t.kr 교차확인 (2026.11.04)"
+  ],
+  "pending": [
+    "기본공제 대상자 소득기준 상향: 연 소득금액 100만 → 300만원 (근로소득만 있는 경우 총급여 500만 → 750만원)",
+    "월세 세액공제 한도 1,000만 → 1,200만원 상향 및 청년 공제율 우대",
+    "청년 IRP(개인형 퇴직연금) 추가 세액공제 신설",
+    "신용카드 등 소득공제 중 대중교통 추가공제 폐지"
+  ],
+  "pendingNote": "아래 개정안은 12월 국회 의결 대기 중으로, 이 계산기에는 반영되지 않았습니다.",
+  "earnedIncomeDeduction": {
+    "brackets": [
+      { "upTo": 5000000, "from": 0, "base": 0, "rate": 0.7 },
+      { "upTo": 15000000, "from": 5000000, "base": 3500000, "rate": 0.4 },
+      { "upTo": 45000000, "from": 15000000, "base": 7500000, "rate": 0.15 },
+      { "upTo": 100000000, "from": 45000000, "base": 12000000, "rate": 0.05 },
+      { "upTo": null, "from": 100000000, "base": 14750000, "rate": 0.02 }
+    ],
+    "cap": 20000000
+  },
+  "taxRates": [
+    { "upTo": 14000000, "rate": 0.06, "progressiveDeduction": 0 },
+    { "upTo": 50000000, "rate": 0.15, "progressiveDeduction": 1260000 },
+    { "upTo": 88000000, "rate": 0.24, "progressiveDeduction": 5760000 },
+    { "upTo": 150000000, "rate": 0.35, "progressiveDeduction": 15440000 },
+    { "upTo": 300000000, "rate": 0.38, "progressiveDeduction": 19940000 },
+    { "upTo": 500000000, "rate": 0.4, "progressiveDeduction": 25940000 },
+    { "upTo": 1000000000, "rate": 0.42, "progressiveDeduction": 35940000 },
+    { "upTo": null, "rate": 0.45, "progressiveDeduction": 65940000 }
+  ],
+  "earnedIncomeTaxCredit": {
+    "threshold": 1300000,
+    "lowRate": 0.55,
+    "highBase": 715000,
+    "highRate": 0.3,
+    "limits": [
+      { "salaryUpTo": 33000000, "start": 740000, "from": 33000000, "rate": 0, "floor": 740000 },
+      { "salaryUpTo": 70000000, "start": 740000, "from": 33000000, "rate": 0.008, "floor": 660000 },
+      { "salaryUpTo": 120000000, "start": 660000, "from": 70000000, "rate": 0.5, "floor": 500000 },
+      { "salaryUpTo": null, "start": 500000, "from": 120000000, "rate": 0.5, "floor": 200000 }
+    ]
+  },
+  "personalDeduction": {
+    "basicPerPerson": 1500000,
+    "additional": {
+      "elderly": 1000000,
+      "disabled": 2000000,
+      "womanHead": 500000,
+      "singleParent": 1000000
+    },
+    "note": "부녀자공제와 한부모공제는 중복 적용되지 않으며 한부모공제가 우선 적용됩니다. 부녀자공제는 별도 소득 요건이 있습니다."
+  },
+  "socialInsurance": {
+    "nationalPensionRate": 1,
+    "healthEmploymentRate": 1
+  },
+  "cardDeduction": {
+    "minSpendRate": 0.25,
+    "rates": {
+      "credit": 0.15,
+      "debitCash": 0.3,
+      "culture": 0.3,
+      "market": 0.4,
+      "transit": 0.4
+    },
+    "cultureSalaryLimit": 70000000,
+    "cultureOverLimitTreatAs": "credit",
+    "cultureOverLimitNote": "총급여 7천만원 초과 시 도서·공연 등 사용액은 문화 공제율(30%)이 적용되지 않습니다. 이 계산기는 보수적으로 신용카드 공제율로 계산합니다.",
+    "minSpendOrder": ["credit", "debitCash", "culture", "market", "transit"],
+    "baseLimit": [
+      { "salaryUpTo": 70000000, "byChildren": [3000000, 3500000, 4000000] },
+      { "salaryUpTo": null, "byChildren": [2500000, 2750000, 3000000] }
+    ],
+    "extraLimit": [
+      { "salaryUpTo": 70000000, "amount": 3000000, "categories": ["market", "transit", "culture"] },
+      { "salaryUpTo": null, "amount": 2000000, "categories": ["market", "transit"] }
+    ]
+  },
+  "housingSubscription": {
+    "salaryLimit": 70000000,
+    "annualCap": 3000000,
+    "rate": 0.4
+  },
+  "childTaxCredit": {
+    "ageNote": "9세 이상 20세 이하 기본공제 대상 자녀 (2017년생 제외)",
+    "totalsByCount": [0, 250000, 550000],
+    "perChildFromThird": 400000
+  },
+  "birthTaxCredit": {
+    "first": 300000,
+    "second": 500000,
+    "thirdPlus": 700000
+  },
+  "pensionAccountCredit": {
+    "savingsCap": 6000000,
+    "totalCap": 9000000,
+    "salaryThreshold": 55000000,
+    "lowRate": 0.15,
+    "highRate": 0.12
+  },
+  "rentCredit": {
+    "salaryLimit": 80000000,
+    "annualCap": 10000000,
+    "salaryThreshold": 55000000,
+    "lowRate": 0.17,
+    "highRate": 0.15,
+    "note": "2026년 귀속부터 세대주의 배우자도 월세 세액공제를 받을 수 있습니다."
+  },
+  "insuranceCredit": {
+    "cap": 1000000,
+    "rate": 0.12
+  },
+  "medicalCredit": {
+    "thresholdRate": 0.03,
+    "rate": 0.15,
+    "generalCap": 7000000
+  },
+  "educationCredit": {
+    "rate": 0.15,
+    "schoolCapPerPerson": 3000000,
+    "collegeCapPerPerson": 9000000
+  },
+  "donationCredit": {
+    "threshold": 10000000,
+    "lowRate": 0.15,
+    "highRate": 0.3
+  },
+  "standardTaxCredit": 130000,
+  "localIncomeTaxRate": 0.1,
+  "withholdingEstimate": {
+    "note": "인적공제·4대보험·근로소득세액공제·자녀세액공제·표준세액공제만 반영해 결정세액을 역산한 대략적 추정치입니다. 실제 원천징수액(간이세액표, 80/100/120% 선택)과 차이가 클 수 있습니다."
+  }
+}

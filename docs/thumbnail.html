@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #07090d; }
+  .poster {
+    width: 1200px; height: 630px; overflow: hidden; position: relative;
+    font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    background:
+      radial-gradient(55% 75% at 12% 8%, rgba(63,224,171,.22), transparent 70%),
+      radial-gradient(45% 60% at 95% 100%, rgba(255,198,92,.16), transparent 70%),
+      linear-gradient(160deg, #0f1520 0%, #07090d 70%);
+    color: #fff;
+  }
+  .grid {
+    position: absolute; inset: 0; opacity: .08;
+    background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(70% 70% at 30% 40%, #000, transparent);
+  }
+  .left { position: absolute; left: 72px; top: 70px; width: 560px; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo {
+    width: 52px; height: 52px; border-radius: 15px; display: grid; place-items: center;
+    background: linear-gradient(135deg, #7ef0c9, #1fc28f); color: #07090d; font-weight: 900; font-size: 30px;
+    box-shadow: 0 12px 30px rgba(31,194,143,.35);
+  }
+  .brand b { font-size: 24px; font-weight: 800; letter-spacing: -.02em; }
+  .brand span { display: block; font-size: 14px; color: #8b97ad; margin-top: 2px; letter-spacing: .02em; }
+  .kicker { margin-top: 54px; font-size: 16px; font-weight: 800; letter-spacing: .22em; color: #7ef0c9; }
+  h1 { margin: 14px 0 0; font-size: 70px; line-height: 1.08; font-weight: 900; letter-spacing: -.045em; }
+  h1 em {
+    font-style: normal;
+    background: linear-gradient(90deg, #7ef0c9, #ffd98a);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .copy { margin-top: 22px; font-size: 21px; line-height: 1.5; color: #b7c0d0; letter-spacing: -.01em; }
+  .pills { margin-top: 30px; display: flex; gap: 10px; }
+  .pill {
+    padding: 10px 16px; border-radius: 999px; font-size: 15px; font-weight: 700; color: #dfe6f1;
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12);
+  }
+  .pill i { font-style: normal; color: #7ef0c9; margin-right: 6px; }
+
+  .stage { position: absolute; right: -150px; top: 70px; width: 720px; perspective: 1600px; }
+  .browser {
+    width: 720px; border-radius: 18px; overflow: hidden; background: #111622;
+    border: 1px solid rgba(255,255,255,.12);
+    transform: rotateY(-14deg) rotateX(4deg) rotateZ(-1deg);
+    box-shadow: 0 50px 100px rgba(0,0,0,.65), 0 0 0 1px rgba(126,240,201,.08), -30px 30px 80px rgba(31,194,143,.18);
+  }
+  .bar { height: 34px; display: flex; align-items: center; gap: 7px; padding: 0 14px; background: #161c2a; }
+  .bar i { width: 11px; height: 11px; border-radius: 50%; background: #323c52; }
+  .bar i:nth-child(1) { background: #ff7b7b; } .bar i:nth-child(2) { background: #ffc65c; } .bar i:nth-child(3) { background: #3fe0ab; }
+  .bar .url { margin-left: 14px; flex: 1; height: 20px; border-radius: 6px; background: #0c1017; color: #6b7690; font-size: 11px; display: flex; align-items: center; padding-left: 10px; }
+  .browser img { display: block; width: 100%; }
+
+  .chip {
+    position: absolute; left: 600px; top: 388px; z-index: 5;
+    padding: 20px 26px; border-radius: 22px;
+    background: linear-gradient(160deg, rgba(22,28,42,.96), rgba(12,16,23,.96));
+    border: 1px solid rgba(126,240,201,.35);
+    box-shadow: 0 30px 60px rgba(0,0,0,.6), 0 0 40px rgba(63,224,171,.15);
+  }
+  .chip small { display: inline-block; font-size: 13px; font-weight: 800; color: #7ef0c9; background: rgba(63,224,171,.14); padding: 5px 10px; border-radius: 999px; }
+  .chip b { display: block; margin-top: 10px; font-size: 46px; font-weight: 900; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+  .chip b span { font-size: 22px; color: #8b97ad; margin-left: 4px; }
+  .foot { position: absolute; left: 72px; bottom: 40px; font-size: 14px; color: #6b7690; letter-spacing: .02em; }
+</style>
+</head>
+<body>
+  <div class="poster">
+    <div class="grid"></div>
+    <div class="left">
+      <div class="brand">
+        <div class="logo">₩</div>
+        <div><b>환급미리</b><span>yearend-refund</span></div>
+      </div>
+      <div class="kicker">2026 귀속 · 2027년 1~2월 정산</div>
+      <h1>13월의 월급,<br /><em>미리 계산하세요</em></h1>
+      <p class="copy">2026 개정 세법 반영 연말정산 환급 계산기.<br />카드 한도·연금저축까지 시뮬레이션.</p>
+      <div class="pills">
+        <span class="pill"><i>●</i>2026 개정 반영</span>
+        <span class="pill"><i>●</i>카드 시뮬레이터</span>
+        <span class="pill"><i>●</i>계산 근거 공개</span>
+      </div>
+    </div>
+    <div class="stage">
+      <div class="browser">
+        <div class="bar"><i></i><i></i><i></i><div class="url">yearend-refund.vercel.app</div></div>
+        <img src="screenshot.png" alt="" />
+      </div>
+    </div>
+    <div class="chip">
+      <small>예상 환급</small>
+      <b>+780,313<span>원</span></b>
+    </div>
+    <div class="foot">세법 수치는 JSON 규칙 파일로 관리 · 서버 없이 브라우저에서 계산</div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink-950: #07090d;
+  --color-ink-900: #0c1017;
+  --color-ink-850: #111622;
+  --color-ink-800: #161c2a;
+  --color-ink-700: #222a3b;
+  --color-ink-600: #323c52;
+  --color-jade-300: #7ef0c9;
+  --color-jade-400: #3fe0ab;
+  --color-jade-500: #1fc28f;
+  --color-gold-300: #ffd98a;
+  --color-gold-400: #ffc65c;
+  --color-coral-400: #ff7b7b;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+
+html { background: var(--color-ink-950); color-scheme: dark; }
+body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+.tabular { font-variant-numeric: tabular-nums; }
+
+input[type="range"] { accent-color: var(--color-jade-400); }
+
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.animate-rise { animation: rise .35s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes glow { 0%,100% { opacity: .55; } 50% { opacity: .9; } }
+.animate-glow { animation: glow 4s ease-in-out infinite; }
