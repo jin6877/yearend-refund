@@ -12,7 +12,7 @@
 
 ## 🔗 라이브 데모
 
-**👉 [LIVE_URL](LIVE_URL)**
+**👉 [https://yearend-refund-delta.vercel.app](https://yearend-refund-delta.vercel.app)**
 
 ## ✨ 주요 기능
 
