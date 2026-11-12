@@ -1,28 +1,51 @@
 @import "tailwindcss";
 
+/*
+ * v2 "먹지 서식" — 세금계산서·원천징수영수증 같은 복사식 서식 용지.
+ * 흰 용지 위 먹지(카본) 청보라 괘선, 라벨 칸 음영, 결과에는 인주 도장 하나.
+ */
 @theme {
-  --color-ink-950: #07090d;
-  --color-ink-900: #0c1017;
-  --color-ink-850: #111622;
-  --color-ink-800: #161c2a;
-  --color-ink-700: #222a3b;
-  --color-ink-600: #323c52;
-  --color-jade-300: #7ef0c9;
-  --color-jade-400: #3fe0ab;
-  --color-jade-500: #1fc28f;
-  --color-gold-300: #ffd98a;
-  --color-gold-400: #ffc65c;
-  --color-coral-400: #ff7b7b;
-  --font-sans: -apple-system, BlinkMacSystemFont, "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --color-desk: #e7e8ee;      /* 책상 — 페이지 바탕 */
+  --color-paper: #ffffff;     /* 서식 용지 */
+  --color-cell: #eeeff8;      /* 라벨 칸 음영 */
+  --color-carbon: #33388a;    /* 먹지 청보라 — 괘선·제목·강조 */
+  --color-carbon-soft: #c9cbe6; /* 옅은 괘선 */
+  --color-ink: #23264a;       /* 본문 글자 */
+  --color-mute: #676b8c;      /* 보조 글자 */
+  --color-seal: #d43d2a;      /* 인주 — 도장·추가 납부 */
+  --font-sans: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-myeongjo: "Nanum Myeongjo", "AppleMyungjo", "Batang", serif;
 }
 
-html { background: var(--color-ink-950); color-scheme: dark; }
-body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+html { background: var(--color-desk); color-scheme: light; }
+body { font-family: var(--font-sans); color: var(--color-ink); -webkit-font-smoothing: antialiased; word-break: keep-all; overflow-wrap: anywhere; }
 .tabular { font-variant-numeric: tabular-nums; }
+.font-myeongjo { font-family: var(--font-myeongjo); }
 
-input[type="range"] { accent-color: var(--color-jade-400); }
+/* 서식 제목: 글자 사이를 벌려 찍는 관공서 서식 표제 */
+.form-title { letter-spacing: 0.22em; margin-right: -0.22em; }
+@media (min-width: 640px) { .form-title { letter-spacing: 0.38em; margin-right: -0.38em; } }
 
-@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-.animate-rise { animation: rise .35s cubic-bezier(.2,.8,.2,1) both; }
-@keyframes glow { 0%,100% { opacity: .55; } 50% { opacity: .9; } }
-.animate-glow { animation: glow 4s ease-in-out infinite; }
+input[type="range"] { accent-color: var(--color-carbon); }
+
+:focus-visible { outline: 2px solid var(--color-carbon); outline-offset: 2px; }
+
+@layer components {
+/* 인주 도장 — 화면에서 움직이는 건 이것 하나 */
+.seal {
+  color: var(--color-seal);
+  border: 3px solid currentColor;
+  box-shadow: inset 0 0 0 2px var(--color-paper), inset 0 0 0 3.5px currentColor;
+  mix-blend-mode: multiply;
+}
+}
+@keyframes stamp {
+  0% { opacity: 0; transform: rotate(-14deg) scale(1.6); }
+  60% { opacity: .95; transform: rotate(-9deg) scale(.96); }
+  100% { opacity: .9; transform: rotate(-9deg) scale(1); }
+}
+.animate-stamp { animation: stamp .45s cubic-bezier(.3,.7,.3,1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-stamp { animation: none; opacity: .9; transform: rotate(-9deg); }
+}

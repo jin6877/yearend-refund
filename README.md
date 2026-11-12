@@ -8,7 +8,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?logo=tailwindcss&logoColor=white)
-![No Server](https://img.shields.io/badge/서버-불필요-1fc28f)
+![No Server](https://img.shields.io/badge/서버-불필요-33388a)
 
 ## 🔗 라이브 데모
 
@@ -16,8 +16,8 @@
 
 ## ✨ 주요 기능
 
-- 🧾 **단계형 입력** — ① 기본정보 ② 카드·현금 ③ 공제 항목 ④ 기납부세액, 결과는 오른쪽(모바일은 하단 바)에 실시간 반영
-- 💰 **큰 숫자 결과 카드** — "예상 환급 +123,456원" / "추가 납부"를 소득세+지방소득세 합산으로
+- 🧾 **서식형 단계 입력** — 원천징수영수증처럼 라벨 칸·기재 칸으로 나뉜 ① 기본정보 ② 카드·현금 ③ 공제 항목 ④ 기납부세액, 결과는 오른쪽(모바일은 하단 바)에 실시간 반영
+- 🔴 **차감징수세액 + 인주 도장** — 돌려받을 금액(또는 더 낼 금액)을 소득세+지방소득세 합산으로 보여주고 "환급"/"납부" 도장을 찍어 표시
 - 🔍 **단계별 계산 근거** — 총급여 → 근로소득공제 → 과세표준 → 산출세액 → 세액공제 항목별 → 결정세액
 - 💳 **"카드 더 쓰면?" 시뮬레이터** — 체크/신용카드 추가 사용 시 환급 변화와 공제한도 도달 여부
 - 🏦 **"연금저축 더 넣으면?" 슬라이더** — 남은 연금계좌 한도 안에서 환급 증가액
@@ -25,6 +25,10 @@
 - ⚖️ **표준세액공제 자동 비교** — 특별세액공제+월세 vs 13만원 중 유리한 쪽 선택
 - 💾 **자동 저장** — 입력값은 localStorage에만 저장 (서버 전송 없음)
 - ⏳ **미확정 개정안 안내** — 국회 의결 대기 항목을 화면 하단에 별도 표기
+
+## 🎨 디자인 (v2 "먹지 서식")
+
+흰 서식 용지 위에 복사식 서식(세금계산서·원천징수영수증)의 먹지 청보라 괘선, 라벨 칸 음영, 결과에만 쓰는 인주 도장 하나. 서체는 표제·금액에 나눔명조, 본문에 IBM Plex Sans KR. 썸네일 디자인 철학은 [`docs/thumbnail-philosophy.md`](docs/thumbnail-philosophy.md).
 
 ## 📐 세법 규칙은 JSON으로
 
@@ -61,4 +65,12 @@ npm install && npm run dev
 
 ## 📸 스크린샷
 
-![앱 스크린샷](docs/screenshot.png)
+![데스크톱 스크린샷](docs/screenshot.png)
+
+<img src="docs/screenshot-mobile.png" alt="모바일 스크린샷" width="320" />
+
+<details><summary>v1 디자인 (다크 테마, 교체됨)</summary>
+
+![v1 스크린샷](docs/screenshot-v1.png)
+
+</details>

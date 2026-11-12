@@ -2,102 +2,93 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
+<!-- 썸네일 v2 "Carbon Duplicate" — docs/thumbnail-philosophy.md 참고. 1200×630 캡처 → public/thumbnail.png -->
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=block" rel="stylesheet" />
 <style>
-  * { box-sizing: border-box; }
-  body { margin: 0; background: #07090d; }
-  .poster {
-    width: 1200px; height: 630px; overflow: hidden; position: relative;
-    font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-    background:
-      radial-gradient(55% 75% at 12% 8%, rgba(63,224,171,.22), transparent 70%),
-      radial-gradient(45% 60% at 95% 100%, rgba(255,198,92,.16), transparent 70%),
-      linear-gradient(160deg, #0f1520 0%, #07090d 70%);
-    color: #fff;
-  }
-  .grid {
-    position: absolute; inset: 0; opacity: .08;
-    background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px);
-    background-size: 48px 48px;
-    mask-image: radial-gradient(70% 70% at 30% 40%, #000, transparent);
-  }
-  .left { position: absolute; left: 72px; top: 70px; width: 560px; }
-  .brand { display: flex; align-items: center; gap: 14px; }
-  .logo {
-    width: 52px; height: 52px; border-radius: 15px; display: grid; place-items: center;
-    background: linear-gradient(135deg, #7ef0c9, #1fc28f); color: #07090d; font-weight: 900; font-size: 30px;
-    box-shadow: 0 12px 30px rgba(31,194,143,.35);
-  }
-  .brand b { font-size: 24px; font-weight: 800; letter-spacing: -.02em; }
-  .brand span { display: block; font-size: 14px; color: #8b97ad; margin-top: 2px; letter-spacing: .02em; }
-  .kicker { margin-top: 54px; font-size: 16px; font-weight: 800; letter-spacing: .22em; color: #7ef0c9; }
-  h1 { margin: 14px 0 0; font-size: 70px; line-height: 1.08; font-weight: 900; letter-spacing: -.045em; }
-  h1 em {
-    font-style: normal;
-    background: linear-gradient(90deg, #7ef0c9, #ffd98a);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-  }
-  .copy { margin-top: 22px; font-size: 21px; line-height: 1.5; color: #b7c0d0; letter-spacing: -.01em; }
-  .pills { margin-top: 30px; display: flex; gap: 10px; }
-  .pill {
-    padding: 10px 16px; border-radius: 999px; font-size: 15px; font-weight: 700; color: #dfe6f1;
-    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12);
-  }
-  .pill i { font-style: normal; color: #7ef0c9; margin-right: 6px; }
-
-  .stage { position: absolute; right: -150px; top: 70px; width: 720px; perspective: 1600px; }
-  .browser {
-    width: 720px; border-radius: 18px; overflow: hidden; background: #111622;
-    border: 1px solid rgba(255,255,255,.12);
-    transform: rotateY(-14deg) rotateX(4deg) rotateZ(-1deg);
-    box-shadow: 0 50px 100px rgba(0,0,0,.65), 0 0 0 1px rgba(126,240,201,.08), -30px 30px 80px rgba(31,194,143,.18);
-  }
-  .bar { height: 34px; display: flex; align-items: center; gap: 7px; padding: 0 14px; background: #161c2a; }
-  .bar i { width: 11px; height: 11px; border-radius: 50%; background: #323c52; }
-  .bar i:nth-child(1) { background: #ff7b7b; } .bar i:nth-child(2) { background: #ffc65c; } .bar i:nth-child(3) { background: #3fe0ab; }
-  .bar .url { margin-left: 14px; flex: 1; height: 20px; border-radius: 6px; background: #0c1017; color: #6b7690; font-size: 11px; display: flex; align-items: center; padding-left: 10px; }
-  .browser img { display: block; width: 100%; }
-
-  .chip {
-    position: absolute; left: 600px; top: 388px; z-index: 5;
-    padding: 20px 26px; border-radius: 22px;
-    background: linear-gradient(160deg, rgba(22,28,42,.96), rgba(12,16,23,.96));
-    border: 1px solid rgba(126,240,201,.35);
-    box-shadow: 0 30px 60px rgba(0,0,0,.6), 0 0 40px rgba(63,224,171,.15);
-  }
-  .chip small { display: inline-block; font-size: 13px; font-weight: 800; color: #7ef0c9; background: rgba(63,224,171,.14); padding: 5px 10px; border-radius: 999px; }
-  .chip b { display: block; margin-top: 10px; font-size: 46px; font-weight: 900; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
-  .chip b span { font-size: 22px; color: #8b97ad; margin-left: 4px; }
-  .foot { position: absolute; left: 72px; bottom: 40px; font-size: 14px; color: #6b7690; letter-spacing: .02em; }
+  @font-face { font-family: "PlexSerif"; src: url("file:///Users/jin6877/Desktop/brag/brag/.claude/skills/canvas-design/canvas-fonts/IBMPlexSerif-Regular.ttf"); }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: #fff; }
+  svg { display: block; }
+  .kr { font-family: "Nanum Myeongjo", serif; }
+  .num { font-family: "PlexSerif", serif; }
 </style>
 </head>
 <body>
-  <div class="poster">
-    <div class="grid"></div>
-    <div class="left">
-      <div class="brand">
-        <div class="logo">₩</div>
-        <div><b>환급미리</b><span>yearend-refund</span></div>
-      </div>
-      <div class="kicker">2026 귀속 · 2027년 1~2월 정산</div>
-      <h1>13월의 월급,<br /><em>미리 계산하세요</em></h1>
-      <p class="copy">2026 개정 세법 반영 연말정산 환급 계산기.<br />카드 한도·연금저축까지 시뮬레이션.</p>
-      <div class="pills">
-        <span class="pill"><i>●</i>2026 개정 반영</span>
-        <span class="pill"><i>●</i>카드 시뮬레이터</span>
-        <span class="pill"><i>●</i>계산 근거 공개</span>
-      </div>
-    </div>
-    <div class="stage">
-      <div class="browser">
-        <div class="bar"><i></i><i></i><i></i><div class="url">yearend-refund.vercel.app</div></div>
-        <img src="screenshot.png" alt="" />
-      </div>
-    </div>
-    <div class="chip">
-      <small>예상 환급</small>
-      <b>+780,313<span>원</span></b>
-    </div>
-    <div class="foot">세법 수치는 JSON 규칙 파일로 관리 · 서버 없이 브라우저에서 계산</div>
-  </div>
+<svg id="c" width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg"></svg>
+<script>
+const INK = '#33388a', SEAL = '#d43d2a', PAPER = '#ffffff'
+const svg = document.getElementById('c')
+const NS = 'http://www.w3.org/2000/svg'
+const el = (tag, attrs, parent = svg) => {
+  const e = document.createElementNS(NS, tag)
+  for (const k in attrs) e.setAttribute(k, attrs[k])
+  parent.appendChild(e)
+  return e
+}
+const text = (s, attrs) => { const t = el('text', attrs); t.textContent = s; return t }
+
+// 결정적 의사난수 — 매번 같은 그림
+let seed = 2026
+const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647)
+
+const L = 64, R = 1136, W = R - L
+el('rect', { x: 0, y: 0, width: 1200, height: 630, fill: PAPER })
+
+// 표제
+text('2026년 귀속', { x: L, y: 92, class: 'kr', 'font-size': 15, 'font-weight': 700, fill: INK, opacity: .55 })
+text('연말정산 환급 미리계산서', {
+  x: L, y: 138, class: 'kr', 'font-size': 36, 'font-weight': 800, fill: INK, 'letter-spacing': 15,
+})
+// 이중 괘선
+el('line', { x1: L, x2: R, y1: 166, y2: 166, stroke: INK, 'stroke-width': 1.6 })
+el('line', { x1: L, x2: R, y1: 171, y2: 171, stroke: INK, 'stroke-width': .8 })
+
+// 13개 칸: 12개월 + 13번째
+const gTop = 196, base = 548, wide = 300
+const colW = (W - wide) / 12
+for (let i = 0; i < 12; i++) {
+  const x0 = L + i * colW
+  text(String(i + 1), { x: x0 + colW / 2, y: gTop + 14, class: 'num', 'font-size': 13, fill: INK, 'text-anchor': 'middle', opacity: .7 })
+  if (i > 0) el('line', { x1: x0, x2: x0, y1: gTop, y2: base, stroke: INK, 'stroke-width': .6, opacity: .35 })
+  // 매달 떼인 세금의 기록: 비슷하지만 조금씩 다른 높이
+  const n = 24 + Math.round(Math.sin(i * 0.9) * 3 + rnd() * 5)
+  for (let k = 0; k < n; k++) {
+    const y = base - 10 - k * 11
+    if (y < gTop + 34) break
+    const inset = 11 + (rnd() < .18 ? 6 : 0)
+    const len = colW - inset * 2 - (rnd() < .3 ? rnd() * 14 : 0)
+    // 먹지 사본의 어긋남: 옅은 그림자 획 + 본 획
+    el('line', { x1: x0 + inset + 1.6, x2: x0 + inset + len + 1.6, y1: y + 1.4, y2: y + 1.4, stroke: INK, 'stroke-width': 2, opacity: .16 })
+    el('line', { x1: x0 + inset, x2: x0 + inset + len, y1: y, y2: y, stroke: INK, 'stroke-width': 2, opacity: .82 })
+  }
+}
+// 칸 위 머리 괘선
+el('line', { x1: L, x2: R, y1: gTop + 26, y2: gTop + 26, stroke: INK, 'stroke-width': .6, opacity: .35 })
+// 13번째 칸을 가르는 이중 괘선
+const x13 = L + 12 * colW
+el('line', { x1: x13, x2: x13, y1: gTop, y2: base, stroke: INK, 'stroke-width': 1.4 })
+el('line', { x1: x13 + 5, x2: x13 + 5, y1: gTop, y2: base, stroke: INK, 'stroke-width': .7 })
+text('13', { x: x13 + 5 + wide / 2, y: gTop + 14, class: 'num', 'font-size': 13, fill: INK, 'text-anchor': 'middle', opacity: .7 })
+
+// 인주 도장 — 화면에 단 한 번
+const defs = el('defs', {})
+const f = el('filter', { id: 'ink', x: '-10%', y: '-10%', width: '120%', height: '120%' }, defs)
+el('feTurbulence', { type: 'fractalNoise', baseFrequency: '1.4', numOctaves: '2', seed: '7', result: 'n' }, f)
+el('feColorMatrix', { in: 'n', type: 'matrix', values: '0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.5 1.85', result: 'm' }, f)
+el('feComposite', { in: 'SourceGraphic', in2: 'm', operator: 'in' }, f)
+const cx = x13 + 5 + wide / 2, cy = gTop + 26 + (base - gTop - 26) / 2 + 6
+const g = el('g', { transform: `rotate(-9 ${cx} ${cy})`, filter: 'url(#ink)', opacity: .92 })
+el('circle', { cx, cy, r: 98, fill: 'none', stroke: SEAL, 'stroke-width': 6 }, g)
+el('circle', { cx, cy, r: 86, fill: 'none', stroke: SEAL, 'stroke-width': 2 }, g)
+const t = document.createElementNS(NS, 'text')
+t.textContent = '환급'
+for (const [k, v] of Object.entries({ x: cx, y: cy + 20, class: 'kr', 'font-size': 64, 'font-weight': 800, fill: SEAL, 'text-anchor': 'middle', 'letter-spacing': 2 })) t.setAttribute(k, v)
+g.appendChild(t)
+
+// 하단
+el('line', { x1: L, x2: R, y1: base, y2: base, stroke: INK, 'stroke-width': 1.6 })
+text('환급미리', { x: L, y: 590, class: 'kr', 'font-size': 22, 'font-weight': 800, fill: INK })
+text('13월의 월급을 미리 계산하는 연말정산 환급 계산기', { x: R, y: 588, class: 'kr', 'font-size': 15, 'font-weight': 700, fill: INK, opacity: .6, 'text-anchor': 'end' })
+</script>
 </body>
 </html>

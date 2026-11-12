@@ -1,6 +1,6 @@
 import type { Inputs, Rules } from '../lib/types'
 import { manwon, pct, won } from '../lib/format'
-import { Group, MoneyInput, Stepper, Toggle } from './fields'
+import { Group, MoneyInput, Stepper, SubGroup, Toggle } from './fields'
 
 export interface StepProps {
   inp: Inputs
@@ -11,7 +11,7 @@ export interface StepProps {
 export function StepBasic({ inp, set, rules }: StepProps) {
   const p = rules.personalDeduction
   return (
-    <div className="space-y-4">
+    <div className="space-y-8">
       <Group title="총급여" desc="비과세 소득(식대 등)을 뺀 연간 급여 총액. 원천징수영수증·급여명세서 합계로 확인할 수 있어요.">
         <MoneyInput
           label="총급여 (연)"
@@ -66,8 +66,7 @@ export function StepBasic({ inp, set, rules }: StepProps) {
           onChange={(v) => set('childrenForCredit', v)}
           help={`자녀세액공제 대상: ${rules.childTaxCredit.ageNote}`}
         />
-        <div className="space-y-4 rounded-2xl bg-ink-900/60 p-4">
-          <p className="text-xs font-semibold text-slate-300">{rules.taxYear}년에 출생·입양한 자녀</p>
+        <SubGroup title={`${rules.taxYear}년에 출생·입양한 자녀`}>
           <Toggle label={`첫째 · ${manwon(rules.birthTaxCredit.first)}`} checked={inp.birthFirst} onChange={(v) => set('birthFirst', v)} />
           <Toggle label={`둘째 · ${manwon(rules.birthTaxCredit.second)}`} checked={inp.birthSecond} onChange={(v) => set('birthSecond', v)} />
           <Stepper
@@ -76,7 +75,7 @@ export function StepBasic({ inp, set, rules }: StepProps) {
             max={5}
             onChange={(v) => set('birthThirdPlus', v)}
           />
-        </div>
+        </SubGroup>
       </Group>
 
       <Group title="4대보험 (연간 본인 부담분)" desc="급여명세서의 국민연금·건강보험·장기요양·고용보험 공제액 1년 합계. 전액 소득공제돼요.">
@@ -95,7 +94,7 @@ export function StepCard({ inp, set, rules }: StepProps) {
   const c = rules.cardDeduction
   const over = inp.salary > c.cultureSalaryLimit
   return (
-    <div className="space-y-4">
+    <div className="space-y-8">
       <Group
         title="신용카드 등 사용액"
         desc={`총급여의 ${pct(c.minSpendRate)}(최저사용금액)를 넘게 쓴 금액부터 공제돼요. 최저사용금액은 공제율이 낮은 신용카드부터 차감합니다.`}
@@ -146,7 +145,7 @@ export function StepDeductions({ inp, set, rules }: StepProps) {
   const e = rules.educationCredit
   const low = inp.salary <= pa.salaryThreshold
   return (
-    <div className="space-y-4">
+    <div className="space-y-8">
       <Group
         title="연금계좌"
         desc={`연금저축 연 ${manwon(pa.savingsCap)}, IRP 합산 ${manwon(pa.totalCap)}까지 ${pct(low ? pa.lowRate : pa.highRate)} 세액공제 (총급여 ${manwon(pa.salaryThreshold)} ${low ? '이하' : '초과'}).`}
@@ -228,19 +227,21 @@ export function StepDeductions({ inp, set, rules }: StepProps) {
 
 export function StepWithheld({ inp, set, rules, estimated }: StepProps & { estimated: number }) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-8">
       <Group
         title="기납부세액"
         desc="매달 월급에서 미리 떼인 소득세의 1년 합계예요. 이 금액이 결정세액보다 많으면 돌려받습니다."
       >
-        <div className="grid grid-cols-2 gap-2 rounded-2xl bg-ink-900 p-1">
+        <div className="grid grid-cols-2 border-b border-carbon-soft" role="radiogroup" aria-label="기납부세액 입력 방식">
           {(['input', 'estimate'] as const).map((m) => (
             <button
               key={m}
               type="button"
+              role="radio"
+              aria-checked={inp.withheldMode === m}
               onClick={() => set('withheldMode', m)}
-              className={`rounded-xl py-2.5 text-sm font-semibold transition ${
-                inp.withheldMode === m ? 'bg-ink-700 text-white shadow' : 'text-slate-400 hover:text-slate-200'
+              className={`py-3 text-sm font-semibold ${
+                inp.withheldMode === m ? 'bg-carbon text-paper' : 'bg-cell text-mute hover:text-carbon'
               }`}
             >
               {m === 'input' ? '직접 입력' : '대략 추정'}
@@ -254,18 +255,18 @@ export function StepWithheld({ inp, set, rules, estimated }: StepProps & { estim
             onChange={(v) => set('withheldIncomeTax', v)}
             help={
               <>
-                급여명세서의 <b className="text-slate-200">‘소득세’</b> 항목 1~12월 합계 (지방소득세 제외). 연말까지 남은 달은
+                급여명세서의 <b className="text-ink">‘소득세’</b> 항목 1~12월 합계 (지방소득세 제외). 연말까지 남은 달은
                 최근 월 금액으로 채워 넣으세요. 지방소득세({pct(rules.localIncomeTaxRate)})는 자동 계산돼요.
               </>
             }
           />
         ) : (
-          <div className="rounded-2xl border border-gold-400/30 bg-gold-400/5 p-4">
-            <div className="flex items-center gap-2">
-              <span className="rounded-full bg-gold-400/20 px-2 py-0.5 text-[11px] font-bold text-gold-300">추정</span>
-              <span className="tabular text-lg font-bold text-white">{won(estimated)}</span>
+          <div className="px-4 py-4">
+            <div className="flex items-baseline justify-between gap-3 border-b-2 border-dashed border-carbon/30 pb-2">
+              <span className="text-[13px] font-semibold text-carbon">추정 기납부 소득세</span>
+              <span className="tabular text-xl font-semibold text-ink">{won(estimated)}</span>
             </div>
-            <p className="mt-2 text-xs leading-relaxed text-slate-400">{rules.withholdingEstimate.note}</p>
+            <p className="mt-2 text-xs leading-relaxed text-mute">{rules.withholdingEstimate.note}</p>
           </div>
         )}
       </Group>

@@ -1,17 +1,28 @@
-import { useState, type ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import { comma, manwon, parseMoney } from '../lib/format'
 
 function Help({ children }: { children: ReactNode }) {
-  return <p className="mt-1.5 text-xs leading-relaxed text-slate-400">{children}</p>
+  return <p className="mt-2 text-xs leading-relaxed text-mute">{children}</p>
+}
+
+/** 서식 한 줄: 왼쪽 음영 라벨 칸 | 오른쪽 기재 칸 (모바일은 위아래) */
+function FormRow({ label, badge, children }: { label: ReactNode; badge?: string; children: ReactNode }) {
+  return (
+    <div className="grid sm:grid-cols-[11.5rem_minmax(0,1fr)]">
+      <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 bg-cell px-4 pb-1 pt-3 sm:border-r sm:border-carbon-soft sm:pb-3">
+        <span className="text-[13px] font-semibold leading-snug text-carbon">{label}</span>
+        {badge && <span className="tabular text-[11px] font-medium text-mute">공제율 {badge}</span>}
+      </div>
+      <div className="min-w-0 px-4 py-3">{children}</div>
+    </div>
+  )
 }
 
 export function FieldLabel({ label, badge }: { label: string; badge?: string }) {
   return (
-    <div className="mb-2 flex items-center gap-2">
-      <span className="text-sm font-semibold text-slate-200">{label}</span>
-      {badge && (
-        <span className="rounded-full bg-ink-700 px-2 py-0.5 text-[10px] font-semibold text-slate-300">{badge}</span>
-      )}
+    <div className="mb-2 flex items-baseline gap-2">
+      <span className="text-[13px] font-semibold text-carbon">{label}</span>
+      {badge && <span className="text-[11px] text-mute">{badge}</span>}
     </div>
   )
 }
@@ -35,26 +46,18 @@ export function MoneyInput({
   steps?: number[]
   placeholder?: string
 }) {
-  const [focus, setFocus] = useState(false)
   return (
-    <div>
-      <FieldLabel label={label} badge={badge} />
-      <div
-        className={`flex items-center rounded-2xl border bg-ink-900 px-4 transition ${
-          focus ? 'border-jade-400/70 ring-4 ring-jade-400/10' : 'border-ink-700 hover:border-ink-600'
-        }`}
-      >
+    <FormRow label={label} badge={badge}>
+      <div className="flex items-baseline border-b-2 border-carbon/25 transition-colors focus-within:border-carbon">
         <input
           inputMode="numeric"
-          className="tabular h-12 w-full bg-transparent text-right text-lg font-semibold text-white outline-none placeholder:text-ink-600"
+          className="tabular h-11 w-full bg-transparent text-right text-xl font-semibold text-ink outline-none placeholder:text-carbon-soft"
           value={comma(value)}
           placeholder={placeholder}
-          onFocus={() => setFocus(true)}
-          onBlur={() => setFocus(false)}
           onChange={(e) => onChange(parseMoney(e.target.value))}
           aria-label={label}
         />
-        <span className="ml-2 text-sm text-slate-400">원</span>
+        <span className="ml-2 text-sm text-mute">원</span>
       </div>
       <div className="mt-2 flex flex-wrap items-center gap-1.5">
         {steps.map((s) => (
@@ -62,26 +65,22 @@ export function MoneyInput({
             key={s}
             type="button"
             onClick={() => onChange(value + s)}
-            className="rounded-lg bg-ink-800 px-2.5 py-1 text-xs font-medium text-slate-300 transition hover:bg-ink-700 hover:text-white active:scale-95"
+            className="tabular border border-carbon-soft px-2 py-0.5 text-xs font-medium text-carbon hover:border-carbon hover:bg-cell"
           >
             +{manwon(s).replace('원', '')}
           </button>
         ))}
         {value > 0 && (
           <>
-            <button
-              type="button"
-              onClick={() => onChange(0)}
-              className="rounded-lg px-2 py-1 text-xs text-slate-500 transition hover:text-coral-400"
-            >
+            <button type="button" onClick={() => onChange(0)} className="px-1.5 py-0.5 text-xs text-mute hover:text-seal">
               지우기
             </button>
-            <span className="ml-auto text-xs text-jade-300/80">{manwon(value)}</span>
+            <span className="tabular ml-auto text-xs text-mute">{manwon(value)}</span>
           </>
         )}
       </div>
       {help && <Help>{help}</Help>}
-    </div>
+    </FormRow>
   )
 }
 
@@ -102,40 +101,29 @@ export function Stepper({
   unit?: string
   help?: ReactNode
 }) {
+  const btn = 'h-9 w-9 text-lg text-carbon hover:bg-cell disabled:text-carbon-soft disabled:hover:bg-transparent'
   return (
-    <div>
-      <div className="flex items-center justify-between gap-3">
-        <span className="text-sm font-semibold text-slate-200">{label}</span>
-        <div className="flex items-center rounded-xl border border-ink-700 bg-ink-900">
-          <button
-            type="button"
-            aria-label={`${label} 줄이기`}
-            disabled={value <= min}
-            onClick={() => onChange(Math.max(min, value - 1))}
-            className="h-9 w-9 text-lg text-slate-300 transition hover:text-white disabled:opacity-30"
-          >
+    <FormRow label={label}>
+      <div className="flex items-center justify-end">
+        <div className="flex items-center border border-carbon/40">
+          <button type="button" aria-label={`${label} 줄이기`} disabled={value <= min} onClick={() => onChange(Math.max(min, value - 1))} className={btn}>
             −
           </button>
-          <span className="tabular w-12 text-center text-sm font-semibold text-white">
+          <span className="tabular w-14 border-x border-carbon/40 text-center text-base font-semibold leading-9 text-ink">
             {value}
-            <span className="ml-0.5 text-xs text-slate-400">{unit}</span>
+            <span className="ml-0.5 text-xs font-normal text-mute">{unit}</span>
           </span>
-          <button
-            type="button"
-            aria-label={`${label} 늘리기`}
-            disabled={value >= max}
-            onClick={() => onChange(Math.min(max, value + 1))}
-            className="h-9 w-9 text-lg text-slate-300 transition hover:text-white disabled:opacity-30"
-          >
+          <button type="button" aria-label={`${label} 늘리기`} disabled={value >= max} onClick={() => onChange(Math.min(max, value + 1))} className={btn}>
             +
           </button>
         </div>
       </div>
       {help && <Help>{help}</Help>}
-    </div>
+    </FormRow>
   )
 }
 
+/** 서식의 체크 칸 ☐ 해당 */
 export function Toggle({
   label,
   checked,
@@ -148,36 +136,48 @@ export function Toggle({
   help?: ReactNode
 }) {
   return (
-    <div>
+    <FormRow label={label}>
       <button
         type="button"
-        role="switch"
+        role="checkbox"
         aria-checked={checked}
+        aria-label={label}
         onClick={() => onChange(!checked)}
-        className="flex w-full items-center justify-between gap-3 text-left"
+        className="ml-auto flex items-center gap-2.5 text-sm"
       >
-        <span className="text-sm font-semibold text-slate-200">{label}</span>
+        <span className={checked ? 'font-semibold text-ink' : 'text-mute'}>{checked ? '해당' : '해당 없음'}</span>
         <span
-          className={`relative h-7 w-12 shrink-0 rounded-full transition ${checked ? 'bg-jade-500' : 'bg-ink-700'}`}
+          className={`grid h-6 w-6 place-items-center border-2 text-sm font-bold leading-none ${
+            checked ? 'border-carbon bg-carbon text-paper' : 'border-carbon/40 text-transparent'
+          }`}
         >
-          <span
-            className={`absolute top-1 h-5 w-5 rounded-full bg-white shadow transition-all ${
-              checked ? 'left-6' : 'left-1'
-            }`}
-          />
+          ✓
         </span>
       </button>
       {help && <Help>{help}</Help>}
-    </div>
+    </FormRow>
   )
 }
 
+/** 서식의 한 구역: 굵은 괘선 아래 제목 줄, 칸마다 가는 괘선 */
 export function Group({ title, desc, children }: { title: string; desc?: string; children: ReactNode }) {
   return (
-    <section className="rounded-3xl border border-ink-700/70 bg-ink-850/80 p-5 sm:p-6">
-      <h3 className="text-base font-bold text-white">{title}</h3>
-      {desc && <p className="mt-1 text-xs leading-relaxed text-slate-400">{desc}</p>}
-      <div className="mt-5 space-y-6">{children}</div>
+    <section className="border-t-2 border-carbon">
+      <div className="px-4 pb-3 pt-4">
+        <h3 className="font-myeongjo text-lg font-extrabold text-carbon">{title}</h3>
+        {desc && <p className="mt-1 max-w-[62ch] text-xs leading-relaxed text-mute">{desc}</p>}
+      </div>
+      <div className="divide-y divide-carbon-soft border-t border-carbon-soft">{children}</div>
     </section>
+  )
+}
+
+/** Group 안에서 묶음 칸 (예: 출생·입양 자녀) */
+export function SubGroup({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <div>
+      <p className="bg-cell/60 px-4 pb-1 pt-3 text-xs font-semibold text-mute">{title}</p>
+      <div className="divide-y divide-carbon-soft/70 pl-4">{children}</div>
+    </div>
   )
 }

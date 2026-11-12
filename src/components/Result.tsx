@@ -28,49 +28,46 @@ export function ResultHero({ r }: { r: CalcResult }) {
   const refund = r.refund >= 0
   const shown = useCountUp(Math.abs(r.refund))
   const empty = r.salary === 0
+  const state = empty ? 'empty' : refund ? 'refund' : 'pay'
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-ink-700 bg-gradient-to-br from-ink-800 via-ink-850 to-ink-900 p-6">
-      <div
-        className={`animate-glow pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full blur-3xl ${
-          refund ? 'bg-jade-400/25' : 'bg-coral-400/25'
-        }`}
-      />
-      <div className="relative">
-        <div className="flex items-center gap-2">
-          <span
-            className={`rounded-full px-2.5 py-1 text-xs font-bold ${
-              refund ? 'bg-jade-400/15 text-jade-300' : 'bg-coral-400/15 text-coral-400'
-            }`}
+    <div className="border-2 border-carbon bg-paper">
+      <div className="flex items-baseline justify-between gap-3 border-b border-carbon bg-cell px-4 py-2.5">
+        <h2 className="font-myeongjo text-base font-extrabold text-carbon">차감징수세액</h2>
+        <span className="text-[11px] text-mute">소득세와 지방소득세 합산</span>
+      </div>
+      <div className="relative px-5 pb-6 pt-5">
+        {!empty && (
+          <div
+            key={state}
+            aria-hidden
+            className="seal animate-stamp pointer-events-none absolute right-4 top-3 grid h-[5.5rem] w-[5.5rem] place-items-center rounded-full"
           >
-            {empty ? '입력 대기' : refund ? '예상 환급' : '예상 추가 납부'}
-          </span>
-          {r.withheldEstimated && (
-            <span className="rounded-full bg-gold-400/15 px-2.5 py-1 text-xs font-bold text-gold-300">기납부 추정</span>
-          )}
-        </div>
+            <span className="font-myeongjo text-[1.6rem] font-extrabold leading-none">{refund ? '환급' : '납부'}</span>
+          </div>
+        )}
+        <p className="text-sm text-mute">
+          {empty ? '총급여를 적으면 계산돼요' : refund ? '연말정산에서 돌려받을 금액' : '연말정산에서 더 낼 금액'}
+          {r.withheldEstimated && <span className="ml-1.5 text-xs text-carbon">(기납부세액 추정)</span>}
+        </p>
         <p
-          className={`tabular mt-3 text-4xl font-extrabold tracking-tight sm:text-5xl ${
-            empty ? 'text-slate-500' : refund ? 'text-white' : 'text-coral-400'
+          className={`tabular font-myeongjo mt-2 text-[2.6rem] font-extrabold leading-none tracking-tight sm:text-5xl ${
+            empty ? 'text-carbon-soft' : refund ? 'text-carbon' : 'text-seal'
           }`}
         >
-          {empty ? '—' : `${refund ? '+' : '−'}${Math.round(shown).toLocaleString('ko-KR')}`}
-          <span className="ml-1 text-xl font-bold text-slate-400">원</span>
+          {empty ? '—' : Math.round(shown).toLocaleString('ko-KR')}
+          <span className="ml-1.5 font-sans text-lg font-semibold text-mute">원</span>
         </p>
-        <p className="mt-2 text-xs text-slate-400">소득세 + 지방소득세 합산 기준</p>
-
-        <dl className="mt-6 grid grid-cols-2 gap-3">
-          <div className="rounded-2xl bg-ink-950/50 p-3.5">
-            <dt className="text-[11px] text-slate-400">결정세액 (지방세 포함)</dt>
-            <dd className="tabular mt-1 text-base font-bold text-white">{won(r.decidedTax + r.decidedLocalTax)}</dd>
-          </div>
-          <div className="rounded-2xl bg-ink-950/50 p-3.5">
-            <dt className="text-[11px] text-slate-400">기납부세액 (지방세 포함)</dt>
-            <dd className="tabular mt-1 text-base font-bold text-white">
-              {won(r.withheldIncomeTax + r.withheldLocalTax)}
-            </dd>
-          </div>
-        </dl>
       </div>
+      <dl className="grid grid-cols-2 divide-x divide-carbon-soft border-t border-carbon-soft">
+        <div className="px-4 py-3">
+          <dt className="text-[11px] text-mute">결정세액 (지방세 포함)</dt>
+          <dd className="tabular mt-1 text-base font-semibold text-ink">{won(r.decidedTax + r.decidedLocalTax)}</dd>
+        </div>
+        <div className="px-4 py-3">
+          <dt className="text-[11px] text-mute">기납부세액 (지방세 포함)</dt>
+          <dd className="tabular mt-1 text-base font-semibold text-ink">{won(r.withheldIncomeTax + r.withheldLocalTax)}</dd>
+        </div>
+      </dl>
     </div>
   )
 }
@@ -84,17 +81,15 @@ function Row({ label, value, sub, strong, minus, indent }: {
   indent?: boolean
 }) {
   return (
-    <div className={`flex items-baseline justify-between gap-3 py-2 ${strong ? 'border-t border-ink-700 pt-3' : ''}`}>
+    <div className={`flex items-baseline justify-between gap-3 py-1.5 ${strong ? 'mt-1 border-t border-carbon pt-2.5' : ''}`}>
       <div className={indent ? 'pl-3' : ''}>
-        <span className={`text-sm ${strong ? 'font-bold text-white' : indent ? 'text-slate-400' : 'text-slate-300'}`}>
+        <span className={`text-sm ${strong ? 'font-semibold text-carbon' : indent ? 'text-mute' : 'text-ink'}`}>
           {label}
         </span>
-        {sub && <p className="text-[11px] text-slate-500">{sub}</p>}
+        {sub && <p className="text-[11px] text-mute">{sub}</p>}
       </div>
       <span
-        className={`tabular shrink-0 text-sm ${strong ? 'font-bold text-white' : 'text-slate-200'} ${
-          minus && value > 0 ? 'text-jade-300' : ''
-        }`}
+        className={`tabular shrink-0 text-sm ${strong ? 'font-semibold text-carbon' : minus && value > 0 ? 'text-mute' : 'text-ink'}`}
       >
         {minus && value > 0 ? '−' : ''}
         {won(value)}
@@ -106,18 +101,18 @@ function Row({ label, value, sub, strong, minus, indent }: {
 export function Breakdown({ r }: { r: CalcResult }) {
   const [open, setOpen] = useState(false)
   return (
-    <div className="rounded-3xl border border-ink-700/70 bg-ink-850/80">
+    <div className="border border-carbon/50 bg-paper">
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="flex w-full items-center justify-between px-5 py-4 text-left"
+        className="flex w-full items-center justify-between px-4 py-3.5 text-left hover:bg-cell"
         aria-expanded={open}
       >
-        <span className="text-sm font-bold text-white">단계별 계산 근거</span>
-        <span className={`text-slate-400 transition-transform ${open ? 'rotate-180' : ''}`}>⌄</span>
+        <span className="text-sm font-semibold text-carbon">단계별 계산 근거</span>
+        <span className="text-xs text-mute">{open ? '접기' : '펼치기'}</span>
       </button>
       {open && (
-        <div className="animate-rise border-t border-ink-700/70 px-5 pb-5 pt-2">
+        <div className="border-t border-carbon-soft px-4 pb-4 pt-2">
           <Row label="총급여" value={r.salary} />
           <Row label="근로소득공제" value={r.earnedIncomeDeduction} minus />
           <Row label="근로소득금액" value={r.earnedIncome} strong />
@@ -158,7 +153,7 @@ export function Breakdown({ r }: { r: CalcResult }) {
             />
           ))}
           {!r.usesStandard && (
-            <p className="py-1 pl-3 text-[11px] text-jade-300/80">
+            <p className="py-1 pl-3 text-[11px] text-carbon">
               특별세액공제+월세 {won(r.itemizedSum)} &gt; 표준세액공제 → 항목별 공제 자동 선택
             </p>
           )}
@@ -166,9 +161,9 @@ export function Breakdown({ r }: { r: CalcResult }) {
           <Row label="지방소득세" value={r.decidedLocalTax} indent />
           <Row label="기납부세액 (소득세)" value={r.withheldIncomeTax} sub={r.withheldEstimated ? '추정값' : undefined} />
           <Row label="기납부 지방소득세" value={r.withheldLocalTax} indent />
-          <div className="mt-2 flex items-center justify-between rounded-2xl bg-ink-950/60 px-4 py-3">
-            <span className="text-sm font-bold text-white">{r.refund >= 0 ? '환급' : '추가 납부'}</span>
-            <span className={`tabular text-base font-extrabold ${r.refund >= 0 ? 'text-jade-300' : 'text-coral-400'}`}>
+          <div className="mt-3 flex items-center justify-between border-y-2 border-double border-carbon px-1 py-2.5">
+            <span className="text-sm font-semibold text-carbon">{r.refund >= 0 ? '환급' : '추가 납부'}</span>
+            <span className={`tabular text-base font-bold ${r.refund >= 0 ? 'text-carbon' : 'text-seal'}`}>
               {won(Math.abs(r.refund))}
             </span>
           </div>
@@ -181,7 +176,7 @@ export function Breakdown({ r }: { r: CalcResult }) {
 function Delta({ v }: { v: number }) {
   const pos = v > 0
   return (
-    <span className={`tabular text-lg font-extrabold ${pos ? 'text-jade-300' : 'text-slate-400'}`}>
+    <span className={`tabular text-lg font-semibold ${pos ? 'text-carbon' : 'text-mute'}`}>
       {pos ? '+' : ''}
       {won(v)}
     </span>
@@ -214,31 +209,33 @@ export function Simulators({ rules, inp, base }: { rules: Rules; inp: Inputs; ba
   const rate = rules.cardDeduction.rates[cardType === 'cardCredit' ? 'credit' : 'debitCash']
 
   let cardStatus: { text: string; tone: string }
-  if (!cardSim.card.minReached) cardStatus = { text: `아직 최저사용금액(${manwon(cardSim.card.minSpend)}) 미달`, tone: 'text-gold-300' }
-  else if (cardSim.card.baseLimitReached && cardDelta === 0) cardStatus = { text: '공제 한도 도달 — 더 써도 환급 변화 없음', tone: 'text-coral-400' }
-  else if (cardSim.card.baseLimitReached) cardStatus = { text: '이 금액에서 기본 공제한도에 도달해요', tone: 'text-gold-300' }
-  else cardStatus = { text: `기본한도 ${manwon(cardSim.card.baseLimit)}까지 ${manwon(cardSim.card.baseLimit - cardSim.card.baseApplied)} 남음`, tone: 'text-jade-300' }
+  if (!cardSim.card.minReached) cardStatus = { text: `아직 최저사용금액(${manwon(cardSim.card.minSpend)}) 미달`, tone: 'text-mute' }
+  else if (cardSim.card.baseLimitReached && cardDelta === 0) cardStatus = { text: '공제 한도 도달 — 더 써도 환급 변화 없음', tone: 'text-seal' }
+  else if (cardSim.card.baseLimitReached) cardStatus = { text: '이 금액에서 기본 공제한도에 도달해요', tone: 'text-mute' }
+  else cardStatus = { text: `기본한도 ${manwon(cardSim.card.baseLimit)}까지 ${manwon(cardSim.card.baseLimit - cardSim.card.baseApplied)} 남음`, tone: 'text-carbon' }
 
   return (
-    <div className="space-y-4">
-      <div className="rounded-3xl border border-ink-700/70 bg-ink-850/80 p-5">
+    <div className="border border-carbon/50 bg-paper">
+      <p className="border-b border-carbon-soft bg-cell px-4 py-2 text-xs text-mute">연말까지 남은 기간에 바꿔 볼 수 있는 것</p>
+      <div className="p-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-bold text-white">💳 카드 더 쓰면?</h3>
-          <div className="flex rounded-xl bg-ink-900 p-0.5 text-xs">
+          <h3 className="text-sm font-semibold text-carbon">카드를 더 쓰면</h3>
+          <div className="flex border border-carbon/40 text-xs">
             {([['cardDebitCash', '체크'], ['cardCredit', '신용']] as const).map(([k, l]) => (
               <button
                 key={k}
                 type="button"
                 onClick={() => setCardType(k)}
-                className={`rounded-lg px-3 py-1.5 font-semibold transition ${cardType === k ? 'bg-ink-700 text-white' : 'text-slate-400'}`}
+                aria-pressed={cardType === k}
+                className={`px-3 py-1 font-semibold ${cardType === k ? 'bg-carbon text-paper' : 'text-mute hover:text-carbon'}`}
               >
                 {l}
               </button>
             ))}
           </div>
         </div>
-        <p className="mt-3 text-xs text-slate-400">
-          {cardType === 'cardCredit' ? '신용카드' : '체크카드'}({pct(rate)})로 <b className="tabular text-white">{manwon(cardExtra)}</b> 더 쓰면
+        <p className="mt-3 text-xs text-mute">
+          {cardType === 'cardCredit' ? '신용카드' : '체크카드'}({pct(rate)})로 <b className="tabular text-ink">{manwon(cardExtra)}</b> 더 쓰면
         </p>
         <input
           type="range"
@@ -256,10 +253,10 @@ export function Simulators({ rules, inp, base }: { rules: Rules; inp: Inputs; ba
         </div>
       </div>
 
-      <div className="rounded-3xl border border-ink-700/70 bg-ink-850/80 p-5">
-        <h3 className="text-sm font-bold text-white">🏦 연금저축 더 넣으면?</h3>
-        <p className="mt-3 text-xs text-slate-400">
-          연말까지 <b className="tabular text-white">{manwon(penVal)}</b> 추가 납입 시 (남은 한도 {manwon(pensionRoom)})
+      <div className="border-t border-carbon-soft p-4">
+        <h3 className="text-sm font-semibold text-carbon">연금저축을 더 넣으면</h3>
+        <p className="mt-3 text-xs text-mute">
+          연말까지 <b className="tabular text-ink">{manwon(penVal)}</b> 추가 납입 시 (남은 한도 {manwon(pensionRoom)})
         </p>
         <input
           type="range"
@@ -273,7 +270,7 @@ export function Simulators({ rules, inp, base }: { rules: Rules; inp: Inputs; ba
           aria-label="연금저축 추가 납입액"
         />
         <div className="mt-2 flex items-end justify-between">
-          <span className="text-[11px] text-slate-400">
+          <span className="text-[11px] text-mute">
             {pensionRoom === 0
               ? '연금계좌 공제 한도를 모두 채웠어요'
               : base.decidedTax === 0
